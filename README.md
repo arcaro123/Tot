@@ -2,7 +2,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Els jocs d’arcaro123</title>
+<title>Els jocs de Machacadron</title>
 <meta name="description" content="Col·lecció de jocs que es poden jugar directament al navegador.">
 <style>
   :root {
@@ -100,7 +100,7 @@
 </head>
 <body>
   <header>
-    <h1>Els jocs d’arcaro123</h1>
+    <h1>Els jocs de Machacadron</h1>
     <p>Tria un joc i juga-hi directament des del navegador, sense instal·lar res.</p>
   </header>
 
