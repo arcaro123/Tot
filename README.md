@@ -131,7 +131,7 @@
   </main>
 
   <footer>
-    Fet per <a href="https://github.com/arcaro123" target="_blank" rel="noopener">arcaro123</a>
+    Fet per <a href="https://github.com/arcaro123" target="_blank" rel="noopener">MACHACADRON</a>
   </footer>
 </body>
 </html>
