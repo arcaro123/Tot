@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ca">
 <head>
@@ -6,197 +7,500 @@
 <title>Els jocs de Machacadron</title>
 <meta name="description" content="Jocs que es poden jugar directament al navegador.">
 <meta name="theme-color" content="#17120b">
+
 <style>
   :root {
     --bg: #f7f1e3;
-    --bg-glow: #ffe9a8;
+    --glow: #ffe9a8;
     --text: #231b11;
     --muted: #7a6a53;
     --accent: #e0a100;
-    --dot: rgba(120, 85, 20, .12);
-    --card-shadow: 0 2px 4px rgba(60, 40, 0, .10), 0 14px 30px rgba(60, 40, 0, .16);
-    --card-shadow-hover: 0 4px 8px rgba(60, 40, 0, .12), 0 24px 44px rgba(60, 40, 0, .26);
+    --dot: rgba(120,85,20,.12);
+    --panel: #fff9ed;
+    --border: #e7d9bc;
+    --shadow: 0 14px 30px #3c280026;
     color-scheme: light;
   }
+
   @media (prefers-color-scheme: dark) {
     :root {
       --bg: #120e08;
-      --bg-glow: #3a2a0c;
+      --glow: #3a2a0c;
       --text: #f7ecd5;
       --muted: #b9a785;
       --accent: #ffc83a;
-      --dot: rgba(255, 200, 80, .07);
-      --card-shadow: 0 2px 4px rgba(0, 0, 0, .5), 0 14px 30px rgba(0, 0, 0, .5);
-      --card-shadow-hover: 0 4px 8px rgba(0, 0, 0, .6), 0 24px 44px rgba(0, 0, 0, .65);
+      --dot: rgba(255,200,80,.07);
+      --panel: #21190e;
+      --border: #483720;
+      --shadow: 0 14px 30px #0007;
       color-scheme: dark;
     }
   }
 
-  *, *::before, *::after { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
   body {
     margin: 0;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     color: var(--text);
     background:
-      radial-gradient(ellipse 80% 50% at 50% -5%, var(--bg-glow), transparent 70%),
+      radial-gradient(ellipse 80% 50% at 50% -5%, var(--glow), transparent 70%),
       radial-gradient(circle, var(--dot) 1.2px, transparent 1.6px) 0 0 / 26px 26px,
       var(--bg);
-    -webkit-font-smoothing: antialiased;
     padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 0);
   }
-  h1, h2, p { border: 0; padding-block: 0; }
 
-  header { text-align: center; padding: clamp(40px, 9vw, 84px) 20px clamp(26px, 5vw, 46px); }
-  header h1 {
-    margin: 0;
-    font-size: clamp(2rem, 7.5vw, 3.6rem);
+  header {
+    text-align: center;
+    padding: clamp(36px, 7vw, 80px) 20px 36px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5.3vw, 3.6rem);
     font-weight: 900;
     letter-spacing: -.035em;
-    line-height: 1.05;
-    background: linear-gradient(120deg, var(--text) 30%, var(--accent) 100%);
-    -webkit-background-clip: text;
+    line-height: 1.08;
+    margin: 0;
+    background: linear-gradient(120deg, var(--text) 30%, var(--accent));
     background-clip: text;
+    -webkit-background-clip: text;
     color: transparent;
   }
-  header .bar {
-    width: 64px; height: 5px; margin: 18px auto 0;
-    border-radius: 3px; background: var(--accent);
+
+  .bar {
+    height: 5px;
+    width: 64px;
+    background: var(--accent);
+    border-radius: 4px;
+    margin: 18px auto 14px;
   }
 
-  main { flex: 1; }
+  header p {
+    font-size: 1rem;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  main {
+    flex: 1;
+  }
+
+  /* DISTRIBUCIÓ DELS JOCS */
+
   .grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));   /* sempre dos quadrats per fila */
-    gap: clamp(12px, 3.4vw, 26px);
-    width: min(660px, 100%);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(14px, 2.5vw, 28px);
+    max-width: 1150px;
     margin: 0 auto;
-    padding: 0 clamp(14px, 4vw, 24px) clamp(48px, 8vw, 80px);
+    padding: 0 24px 64px;
     list-style: none;
   }
 
-  /* ---------- targeta quadrada ---------- */
+  .grid li {
+    min-width: 0;
+  }
+
+  /* TARGETES */
+
   .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--panel);
+    text-decoration: none;
+    color: var(--text);
+    box-shadow: var(--shadow);
+    transition: transform .25s, box-shadow .25s;
+    outline-offset: 5px;
+    animation: rise .55s both;
+  }
+
+  .grid li:nth-child(2) .card {
+    animation-delay: .07s;
+  }
+
+  .grid li:nth-child(3) .card {
+    animation-delay: .14s;
+  }
+
+  .card:hover,
+  .card:focus-visible {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px #0004;
+  }
+
+  .card:focus-visible {
+    outline: 3px solid var(--accent);
+  }
+
+  /* PORTADES */
+
+  .cover {
     position: relative;
-    display: block;
-    aspect-ratio: 1 / 1;
-    border-radius: clamp(18px, 5vw, 30px);
+    aspect-ratio: 1;
     overflow: hidden;
     isolation: isolate;
-    color: #fff;
-    text-decoration: none;
-    box-shadow: var(--card-shadow);
-    outline-offset: 4px;
-    transition: transform .25s cubic-bezier(.2, .8, .2, 1), box-shadow .25s ease;
-    animation: rise .6s cubic-bezier(.2, .8, .2, 1) both;
   }
-  .grid li:nth-child(2) .card { animation-delay: .08s; }
-  .grid li:nth-child(3) .card { animation-delay: .16s; }
-  .card::after {                      /* vora fina i reflex */
-    content: "";
-    position: absolute; inset: 0; z-index: 3;
-    border-radius: inherit;
-    box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .22), inset 0 1px 0 rgba(255, 255, 255, .35);
-    pointer-events: none;
-  }
-  .card:hover, .card:focus-visible { transform: translateY(-6px); box-shadow: var(--card-shadow-hover); }
-  .card:focus-visible { outline: 3px solid var(--accent); }
-  .card:active { transform: translateY(-2px) scale(.99); }
 
-  .art { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; }
-  .bees .art   { background-color: #3a2606; background-image: url("img/bg-bees.svg"); }
-  .quest .art  { background-color: #ffc83a; background-image: url("img/bg-quest.svg"); }
-  .ratlla .art { background-color: #f6efe4; background-image: url("img/bg-ratlla.svg"); }
+  .art {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .bees .art {
+    background-color: #3a2606;
+    background-image: url("img/bg-bees.svg");
+  }
+
+  .quest .art {
+    background-color: #ffc83a;
+    background-image: url("img/bg-quest.svg");
+  }
+
+  .ratlla .art {
+    background-color: #f6efe4;
+    background-image: url("img/bg-ratlla.svg");
+  }
 
   .hero, .mini {
-    position: absolute; z-index: 1;
-    transition: transform .35s cubic-bezier(.2, .8, .2, 1);
+    position: absolute;
+    z-index: 1;
+    transition: transform .35s;
   }
+
   .hero {
-    left: 50%; top: 41%;
-    width: 60%; height: 60%;
+    left: 50%;
+    top: 43%;
+    width: 66%;
+    height: 66%;
     object-fit: contain;
     transform: translate(-50%, -50%);
-    filter: drop-shadow(0 10px 12px rgba(0, 0, 0, .38));
+    filter: drop-shadow(0 10px 12px #0006);
   }
-  .card:hover .hero, .card:focus-visible .hero { transform: translate(-50%, -52%) scale(1.07); }
-  .bees .hero { image-rendering: pixelated; width: 64%; height: 64%; top: 42%; }
-  .quest .hero { width: 66%; height: 66%; top: 42%; }
-  .ratlla .hero { width: 44%; height: 56%; top: 40%; }
 
-  .mini { image-rendering: pixelated; width: 11%; height: auto; opacity: .92; }
-  .m1 { left: 7%;  bottom: 22%; transform: rotate(-18deg); }
-  .m2 { right: 8%; bottom: 30%; width: 10%; transform: rotate(16deg); }
-  .m3 { right: 16%; top: 16%; width: 7%; opacity: .7; transform: rotate(-8deg); }
-  .m4 { left: 15%; top: 18%; width: 6%; opacity: .6; transform: rotate(10deg); }
-  .card:hover .m1 { transform: rotate(-26deg) translateY(-6px); }
-  .card:hover .m2 { transform: rotate(24deg) translateY(-8px); }
+  .bees .hero, .mini {
+    image-rendering: pixelated;
+  }
+
+  .ratlla .hero {
+    width: 44%;
+    height: 56%;
+    top: 40%;
+  }
+
+  .card:hover .hero,
+  .card:focus-visible .hero {
+    transform: translate(-50%, -52%) scale(1.07);
+  }
+
+  /* ABELLES PETITES */
+
+  .mini {
+    width: 10%;
+    height: auto;
+    opacity: .9;
+  }
+
+  .m1 {
+    left: 7%;
+    bottom: 22%;
+    transform: rotate(-18deg);
+  }
+
+  .m2 {
+    right: 8%;
+    bottom: 30%;
+    transform: rotate(16deg);
+  }
+
+  .m3 {
+    right: 16%;
+    top: 16%;
+    width: 7%;
+  }
+
+  .m4 {
+    left: 15%;
+    top: 18%;
+    width: 6%;
+  }
+
+  /* NOM DEL JOC */
 
   .name {
-    position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
-    padding: 34% 6% 5.5%;
-    background: linear-gradient(to top, rgba(12, 7, 2, .82) 12%, rgba(12, 7, 2, .45) 55%, rgba(12, 7, 2, 0));
-    font-size: clamp(1rem, 4.6vw, 1.6rem);
-    font-weight: 800;
-    letter-spacing: -.015em;
-    line-height: 1.1;
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 2;
+    padding: 32% 6% 6%;
+    background: linear-gradient(
+      to top,
+      #100a04e6,
+      #100a0470 55%,
+      transparent
+    );
+    font-size: clamp(1.05rem, 2.4vw, 1.65rem);
+    font-weight: 850;
+    color: white;
     text-align: center;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, .5);
+    text-shadow: 0 2px 8px #0008;
   }
 
-  footer { padding: 0 20px calc(30px + env(safe-area-inset-bottom, 0)); text-align: center; font-size: .9rem; color: var(--muted); }
-  footer a { color: var(--text); text-underline-offset: 3px; }
-  footer a:hover { color: var(--accent); }
+  /* INFORMACIÓ DEL JOC */
 
-  @keyframes rise { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: none; } }
+  .info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+    padding: 18px 20px 20px;
+    gap: 10px;
+  }
+
+  .genre {
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .info p {
+    margin: 0 0 8px;
+    line-height: 1.55;
+    font-size: .95rem;
+    color: var(--text);
+  }
+
+  .play {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: auto;
+    padding: 11px 14px;
+    background: var(--accent);
+    color: #241a08;
+    font-weight: 800;
+    border-radius: 10px;
+    font-size: .92rem;
+  }
+
+  /* PEU DE PÀGINA */
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: .9rem;
+    padding: 0 20px 30px;
+  }
+
+  footer a {
+    color: var(--text);
+    text-underline-offset: 3px;
+  }
+
+  /* ANIMACIONS */
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* TAULETES: DOS JOCS PER FILA */
+
+  @media (max-width: 760px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding: 0 16px 40px;
+    }
+
+    .info {
+      padding: 14px;
+    }
+
+    .name {
+      font-size: clamp(1rem, 3.8vw, 1.45rem);
+    }
+  }
+
+  /* MÒBILS: UN JOC PER FILA */
+
+  @media (max-width: 460px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+      max-width: 390px;
+    }
+
+    .cover {
+      aspect-ratio: 5 / 4;
+    }
+
+    .name {
+      font-size: 1.5rem;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .card, .hero, .mini { transition: none; animation: none; }
-    .card:hover, .card:focus-visible { transform: none; }
-    .card:hover .hero { transform: translate(-50%, -50%); }
+    .card, .hero, .mini {
+      animation: none;
+      transition: none;
+    }
+
+    .card:hover,
+    .card:focus-visible {
+      transform: none;
+    }
   }
 </style>
 </head>
+
 <body>
+
   <header>
     <h1>Els jocs de Machacadron</h1>
     <div class="bar"></div>
+    <p>Tria la teva pròxima partida. Juga directament al navegador.</p>
   </header>
 
   <main>
     <ul class="grid">
+
+      <!-- THE BATTLEBEES -->
+
       <li>
-        <a class="card bees" href="https://arcaro123.github.io/BattleBees/" target="_blank" rel="noopener" aria-label="Jugar a The BattleBees (s'obre en una pestanya nova)">
-          <div class="art"></div>
-          <img class="mini m1" src="img/bee.png" alt="">
-          <img class="mini m2" src="img/bee.png" alt="">
-          <img class="mini m3" src="img/bee.png" alt="">
-          <img class="mini m4" src="img/bee.png" alt="">
-          <img class="hero" src="img/bee.png" alt="" loading="lazy">
-          <span class="name">The BattleBees</span>
+        <a class="card bees"
+           href="https://arcaro123.github.io/BattleBees/"
+           target="_blank"
+           rel="noopener"
+           aria-label="Jugar a The BattleBees en una pestanya nova">
+
+          <div class="cover">
+            <div class="art"></div>
+
+            <img class="mini m1" src="img/bee.png" alt="">
+            <img class="mini m2" src="img/bee.png" alt="">
+            <img class="mini m3" src="img/bee.png" alt="">
+            <img class="mini m4" src="img/bee.png" alt="">
+
+            <img class="hero" src="img/bee.png" alt="">
+
+            <span class="name">The BattleBees</span>
+          </div>
+
+          <div class="info">
+            <span class="genre">Acció · Arcade</span>
+
+            <p>
+              Endinsa't en un món d'abelles i supera els
+              reptes que t'esperen en una aventura arcade.
+            </p>
+
+            <span class="play">
+              Jugar ara
+              <span aria-hidden="true">↗</span>
+            </span>
+          </div>
+
         </a>
       </li>
+
+      <!-- POKEMONQUEST -->
+
       <li>
-        <a class="card quest" href="https://arcaro123.github.io/PokemonQuest/" target="_blank" rel="noopener" aria-label="Jugar a PokemonQuest (s'obre en una pestanya nova)">
-          <div class="art"></div>
-          <img class="hero" src="img/pikachu.png" alt="" loading="lazy">
-          <span class="name">PokemonQuest</span>
+        <a class="card quest"
+           href="https://arcaro123.github.io/PokemonQuest/"
+           target="_blank"
+           rel="noopener"
+           aria-label="Jugar a PokemonQuest en una pestanya nova">
+
+          <div class="cover">
+            <div class="art"></div>
+
+            <img class="hero" src="img/pikachu.png" alt="">
+
+            <span class="name">PokemonQuest</span>
+          </div>
+
+          <div class="info">
+            <span class="genre">Aventura · Plataformes</span>
+
+            <p>
+              Salta entre plataformes, esquiva els enemics
+              i recull Poké Balls per avançar de nivell.
+            </p>
+
+            <span class="play">
+              Jugar ara
+              <span aria-hidden="true">↗</span>
+            </span>
+          </div>
+
         </a>
       </li>
+
+      <!-- RATLLA -->
+
       <li>
-        <a class="card ratlla" href="https://arcaro123.github.io/ratlla/" target="_blank" rel="noopener" aria-label="Jugar a Ratlla (s'obre en una pestanya nova)">
-          <div class="art"></div>
-          <img class="hero" src="img/pawn.png" alt="" loading="lazy">
-          <span class="name">Ratlla</span>
+        <a class="card ratlla"
+           href="https://arcaro123.github.io/ratlla/"
+           target="_blank"
+           rel="noopener"
+           aria-label="Jugar a Ratlla en una pestanya nova">
+
+          <div class="cover">
+            <div class="art"></div>
+
+            <img class="hero" src="img/pawn.png" alt="">
+
+            <span class="name">Ratlla</span>
+          </div>
+
+          <div class="info">
+            <span class="genre">Estratègia · Jocs de taula</span>
+
+            <p>
+              Juga a cinc clàssics, desafia els bots,
+              guanya punts i personalitza els teus taulers.
+            </p>
+
+            <span class="play">
+              Jugar ara
+              <span aria-hidden="true">↗</span>
+            </span>
+          </div>
+
         </a>
       </li>
+
     </ul>
   </main>
 
   <footer>
-    Fet per <a href="https://github.com/arcaro123" target="_blank" rel="noopener">Machacadron</a>
+    Fet per
+    <a href="https://github.com/arcaro123"
+       target="_blank"
+       rel="noopener">
+      Machacadron
+    </a>
   </footer>
+
 </body>
 </html>
